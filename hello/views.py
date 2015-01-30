@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Greeting
+from .models import Hypothesis
 from .forms import DocumentForm
+
+import naive_bayes
+import json
 
 def index(request):
     form = DocumentForm()
@@ -10,14 +13,13 @@ def index(request):
 
 def use(request):
     form = DocumentForm(request.POST, request.FILES)
-    if form.is_valid():
-        docfile = request.FILES['docfile']
-        cnt = 0;
-        lines = []
-        for line in docfile:
-            lines.append(line)
-            cnt = cnt + 1
-            if cnt > 10:
-                break
 
-        return render(request, 'db.html', {'lines': lines})
+    if not form.is_valid():
+        return HttpResponse("Form response not valid.")
+
+    docfile = request.FILES['docfile']
+    model = naive_bayes.naive_bayes(docfile)
+    hypothesis = Hypothesis.objects.create(alg='NB', params=json.dumps(model))
+    hypothesis.save()
+
+    return render(request, 'db.html', {'model': hypothesis.primary_key})
