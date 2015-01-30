@@ -22,4 +22,4 @@ def use(request):
     hypothesis = Hypothesis.objects.create(alg='NB', params=json.dumps(model))
     hypothesis.save()
 
-    return render(request, 'db.html', {'model': hypothesis.primary_key})
+    return render(request, 'db.html', {'model': hypothesis.pk})
