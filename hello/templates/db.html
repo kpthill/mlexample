@@ -1,8 +1,17 @@
-<h1>Page View Report</h1>
+{% load staticfiles%}
+<script src="{% static "/static/js/jquery-2.1.3.js" %}"></script>
+<script src="{% static "/static/js/use.js" %}"></script>
 
+<h1>Use the model</h1>
 
-<ul>
+<label id="model" style="visibility: hidden"> {{model}} </label>
 
-Model trained! Primary key is: {{model}}.
+Model trained! Enter a string below to have the model classify it:
 
+<p>
+<input type="text" name="sample" id="sample" style="width:300px">
+<button type="button" id="sample_submit">Classify</button>
+</p>
+
+<ul id="results_list">
 </ul>

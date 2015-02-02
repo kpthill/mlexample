@@ -12,6 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^$', hello.views.index, name='index'),
     url(r'^use', hello.views.use, name='use'),
+    url(r'^predict', hello.views.predict, name='predict'),
     url(r'^admin/', include(admin.site.urls)),
 
 )
