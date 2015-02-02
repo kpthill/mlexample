@@ -18,7 +18,7 @@ def cross_validate(train, classify, data):
 
     for line in test_set:
         label, sample = line.split("\t", 1)
-        guess = classify(model, sample)[0][0]
+        guess = classify(model, sample)[0]
         print (label, guess, sample)
         if guess == label:
             correct += 1

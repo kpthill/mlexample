@@ -46,7 +46,7 @@ def classify(model, sentence):
         if posterior[label] > best[1]:
             best = (label, posterior[label])
 
-    return (best, posterior)
+    return best
 
 # with open('../../MLexample/movie-reviews-dataset.tsv') as file:
 #     mymodel = naive_bayes(file)
