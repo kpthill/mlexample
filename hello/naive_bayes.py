@@ -1,6 +1,6 @@
 from my_utils import *
 
-def naive_bayes(file):
+def train(file):
     word_counts, label_counts = count_words(file)
 
     n = sum(label_counts.values()) # the total number of training set examples

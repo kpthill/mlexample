@@ -1,5 +1,8 @@
+import string
+
 def get_words(sentence):
-    return set(sentence.split())
+    cleaned = ''.join(c for c in sentence if c not in string.punctuation)
+    return set(cleaned.lower().split())
 
 def count_words(file):
     word_counts = {}

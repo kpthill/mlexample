@@ -3,13 +3,13 @@ import random
 training_fraction = 0.7
 
 def cross_validate(train, classify, data):
-    training_set = []
-    test_set = []
-    for line in data:
-        if random.random() < training_fraction:
-            training_set.append(line)
-        else:
-            test_set.append(line)
+    training_set = list(data) #[]
+    test_set = list(training_set) #[]
+    # for line in data:
+    #     if random.random() < training_fraction:
+    #         training_set.append(line)
+    #     else:
+    #         test_set.append(line)
 
     model = train(training_set)
 
@@ -28,10 +28,11 @@ def cross_validate(train, classify, data):
     return model, score
 
 import naive_bayes
+import logistic
 
 with open('../../MLexample/movie-reviews-dataset.tsv') as dataset:
-    print "score: "
-    print cross_validate(naive_bayes.naive_bayes, naive_bayes.classify, dataset)[1]
+    score = cross_validate(logistic.train, logistic.classify, dataset)[1]
+    print "score: %f" % score
 
 # alist = sorted(mymodel[0]['negative'].items(), key=lambda(t): -t[1])[0:10]
 # print alist

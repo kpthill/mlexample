@@ -19,7 +19,7 @@ def use(request):
         return HttpResponse("Form response not valid.")
 
     docfile = request.FILES['docfile']
-    model = naive_bayes.naive_bayes(docfile)
+    model = naive_bayes.train(docfile)
     hypothesis = Hypothesis.objects.create(alg='NB', params=json.dumps(model))
     hypothesis.save()
 
