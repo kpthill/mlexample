@@ -2,11 +2,11 @@
 <script src="{% static "/static/js/jquery-2.1.3.js" %}"></script>
 <script src="{% static "/static/js/use.js" %}"></script>
 
-<h1>Use the model</h1>
+<h1>Model trained</h1>
 
-<label id="model" style="visibility: hidden"> {{model}} </label>
+<p>Cross validation score was: {{score}}%</p>
 
-Model trained! Enter a string below to have the model classify it:
+<p>Enter a string below to have the model classify it:</p>
 
 <p>
 <input type="text" name="sample" id="sample" style="width:300px">
@@ -15,3 +15,5 @@ Model trained! Enter a string below to have the model classify it:
 
 <ul id="results_list">
 </ul>
+
+<label id="model" style="visibility: hidden"> {{model}} </label>

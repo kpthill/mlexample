@@ -8,6 +8,7 @@ import json
 
 import naive_bayes
 import logistic
+import cross_validate
 
 algorithms = {"NB": naive_bayes, "LR": logistic}
 
@@ -24,12 +25,14 @@ def use(request):
     docfile = request.FILES['docfile']
     alg_symbol = request.POST['algorithm']
     algorithm = algorithms[alg_symbol]
-    model = algorithm.train(docfile)
-    
+    # model = algorithm.train(docfile)
+
+    model, score = cross_validate.cross_validate(algorithm.train, algorithm.classify, docfile)
+
     hypothesis = Hypothesis.objects.create(alg=alg_symbol, params=json.dumps(model))
     hypothesis.save()
 
-    return render(request, 'db.html', {'model': hypothesis.pk})
+    return render(request, 'db.html', {'model': hypothesis.pk, 'score': ("%.1f" % (score*100))})
 
 def predict(request):
     n = request.GET.get("model")

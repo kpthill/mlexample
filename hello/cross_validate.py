@@ -26,9 +26,10 @@ def cross_validate(train, classify, data):
 
     return model, score
 
-import naive_bayes
-import logistic
+if __name__=='__main__':
+    import naive_bayes
+    import logistic
 
-with open('../../MLexample/movie-reviews-dataset.tsv') as dataset:
-    score = cross_validate(logistic.train, logistic.classify, dataset)[1]
-    print "score: %f" % score
+    with open('../../MLexample/movie-reviews-dataset.tsv') as dataset:
+        score = cross_validate(logistic.train, logistic.classify, dataset)[1]
+        print "score: %f" % score
