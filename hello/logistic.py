@@ -1,5 +1,7 @@
-from numpy import *
 from my_utils import *
+
+import math
+import random
 
 alpha = 2
 threshold = 0.05
@@ -14,12 +16,11 @@ def train(data):
 
 def gradient_ascent(data):
     data = list(data)
+    random.shuffle(data) # This is really important, since we're not doing batch gradient ascent
     theta = {}
     error = threshold + 1
-    i = 0
-    while i < 50:
-        i += 1
-        print "starting gradient ascent."
+
+    while error > threshold:
         error = 0
         n = 0
 
@@ -34,9 +35,8 @@ def gradient_ascent(data):
                     theta[word] = 0
                 theta[word] += alpha * (y - score)
             error += math.fabs(y - score)
-
         error = error / n
-        print error
+
     return theta
 
 def score_sentence(theta, words):
@@ -50,26 +50,15 @@ def sigmoid(num):
     return 1.0 / (1 + math.exp(-num))
 
 def classify(model, sample):
-    res = 0;
-    words = get_words(sample)
+    score = score_sentence(model, get_words(sample))
 
-    debug( words)
+    label = 'positive' if score > 0.5 else 'negative'
 
-    for word in words:
-        if word in model:
-            debug( "%s: %f" % (word, model[word]))
-            res += model[word]
-        else:
-            continue
+    # We want to report probability correct rather than probability positive
+    if score < 0.5:
+        score = 1 - score
 
-    debug( res)
-
-    label = 'positive' if sigmoid(res) > 0.5 else 'negative'
-
-    answer = label, sigmoid(res)
-
-    debug( answer)
-    return answer
+    return label, score
 
 if __name__ == "__main__":
     with open('../../MLexample/movie-reviews-dataset.tsv') as file:

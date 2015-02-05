@@ -10,9 +10,9 @@ $(document).ready(function() {
       },
       success: function(data){
         res = JSON.parse(data);
-        percentage = Math.floor(res.results[0][1]*100);
+        percentage = Math.floor(res.results[1]*100);
         $("#results_list").prepend(
-          '<li>' + res.sample + ": " + res.results[0][0] + ' (' + percentage + '%) </li>');
+          '<li>' + res.sample + ": " + res.results[0] + ' (' + percentage + '%) </li>');
         console.log(data);
         window.datalist = window.datalist || [];
         window.datalist.push(data);

@@ -2,8 +2,8 @@
 # Adapted from <http://stackoverflow.com/questions/5871730/need-a-minimal-django-file-upload-example>
 from django import forms
 
+CHOICES = [('NB', 'Naive Bayes'), ('LR', 'Logistic Regression')]
+
 class DocumentForm(forms.Form):
-    docfile = forms.FileField(
-        label='Select a file',
-        help_text='max. 42 megabytes'
-    )
+    algorithm = forms.ChoiceField(choices=CHOICES)
+    docfile = forms.FileField(label='')

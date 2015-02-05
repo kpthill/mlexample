@@ -4,9 +4,12 @@ from django.http import HttpResponse
 from .models import Hypothesis
 from .forms import DocumentForm
 
-import naive_bayes
-
 import json
+
+import naive_bayes
+import logistic
+
+algorithms = {"NB": naive_bayes, "LR": logistic}
 
 def index(request):
     form = DocumentForm()
@@ -19,21 +22,20 @@ def use(request):
         return HttpResponse("Form response not valid.")
 
     docfile = request.FILES['docfile']
-    model = naive_bayes.train(docfile)
-    hypothesis = Hypothesis.objects.create(alg='NB', params=json.dumps(model))
+    alg_symbol = request.POST['algorithm']
+    algorithm = algorithms[alg_symbol]
+    model = algorithm.train(docfile)
+    
+    hypothesis = Hypothesis.objects.create(alg=alg_symbol, params=json.dumps(model))
     hypothesis.save()
 
     return render(request, 'db.html', {'model': hypothesis.pk})
 
 def predict(request):
-    # results = naive_bayes.classify(Hypothesis.objects.get(request.GET.get("model")).params, request.GET.get("sample"));
     n = request.GET.get("model")
-    hypo = Hypothesis.objects.get(pk=n)
-    results = ""
-    results = naive_bayes.classify(json.loads(hypo.params), request.GET.get("sample"));
-    return HttpResponse(json.dumps({"method": request.method,
-                                    "is ajax": request.is_ajax(),
-                                    "model_num": request.GET.get("model"),
-                                    "hypo": hypo.alg,
-                                    "results": results,
-                                    "sample": request.GET.get("sample")}))
+    hypothesis = Hypothesis.objects.get(pk=n)
+    alg = algorithms[hypothesis.alg]
+
+    results = alg.classify(json.loads(hypothesis.params), request.GET.get("sample"));
+
+    return HttpResponse(json.dumps({"results": results, "sample": request.GET.get("sample")}))

@@ -1,21 +1,25 @@
 <h1>Simple Text Classifier</h1>
 
-<ul>
+To train the classifier, choose and algorithm and load a .tsv file with two
+columns, the second of which is a selection of text and the first of which is a
+label. If you choose logistic regression, you must have only two labels,
+'positive' and 'negative'.
+
+<br>
 
 <form action='use.html' method="post" enctype="multipart/form-data">
-To train the classifier, load a .tsv file with two columns, the second of which
-is a selection of text and the first of which is a label: <br>
 
   {% csrf_token %}
+
   <p>{{ form.non_field_errors }}</p>
   <p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+
   <p>
-  {{ form.docfile.errors }}
+  {{ form.algorithm }}
   {{ form.docfile }}
   </p>
-  <p><input type="submit" value="Upload" /></p>
-    <!-- <input type="file" name="fileToUpload"> <br> -->
-    <!-- <input type="submit" value="Upload File" name="submit"> -->
-</form>
 
-</ul>
+  <p> {{ form.docfile.errors }} </p>
+
+  <p><input type="submit" value="Upload" /></p>
+</form>
